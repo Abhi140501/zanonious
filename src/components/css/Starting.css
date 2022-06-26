@@ -1,3 +1,32 @@
-.head-logo {
+.head-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border: 1px solid black;
+    padding: 0 2% 0 2%;
+}
+.head-logo {
+    width: 12%;
+}
+.cape-logo {
+    width: 10%;
+}
+.title {
+    clear: both;
+    text-align: center;
+    font-size: 4rem;
+}
+
+.loading {
+    text-align: center;
+}
+
+.spinner {
+    text-align: center;
+    padding: 2%;
+}
+
+.group {
+    width: 90%;
+    text-align: right;
 }

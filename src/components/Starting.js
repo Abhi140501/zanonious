@@ -1,9 +1,21 @@
 import './css/Starting.css';
+import { ClipLoader } from 'react-spinners';
+import Header from './Header';
 
 function Starting() {
+    setTimeout(function() {
+        window.location.replace('/home');
+    }, 3000);
+
     return (
         <div className='starting'>
-            <img src='./img/er.png' width={150} height={150} className="head-logo" alt='Zanonious Logo'></img>
+            <Header />
+            <h2 className='title'>ZANONIOUS</h2>
+            <div className='spinner'>
+                <ClipLoader color='grey' loading='true' size={100} />
+            </div>
+            <p className='loading'>Loding...</p>
+            <p className='group'>Group 7</p>
         </div>
     );
 }
