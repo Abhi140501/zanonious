@@ -12,7 +12,7 @@ function Starting() {
             <Header />
             <h2 className='title'>ZANONIOUS</h2>
             <div className='spinner'>
-                <ClipLoader color='grey' loading='true' size={100} />
+                <ClipLoader color='red' loading='true' size={100} />
             </div>
             <p className='loading'>Loding...</p>
             <p className='group'>Group 7</p>

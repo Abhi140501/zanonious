@@ -4,6 +4,7 @@
     align-items: center;
     border: 1px solid black;
     padding: 0 2% 0 2%;
+    background-color: lightcoral;
 }
 .head-logo {
     width: 12%;
@@ -15,10 +16,12 @@
     clear: both;
     text-align: center;
     font-size: 4rem;
+    color: white;
 }
 
 .loading {
     text-align: center;
+    color: white;
 }
 
 .spinner {
@@ -29,4 +32,5 @@
 .group {
     width: 90%;
     text-align: right;
+    color: white;
 }

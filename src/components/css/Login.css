@@ -1,0 +1,35 @@
+.login {
+    color: red;
+    font-size: xx-large;
+    width: 33%;
+    background-color:rgb(170, 207, 204);
+    margin: auto;
+    margin-top: 3%;
+}
+
+.row {
+    text-align: center;
+}
+
+.button1, .button2 {
+    padding: 2rem 4rem 2rem 4rem;
+    font-size: 1rem;
+    background-color: rgb(170, 207, 204);
+    border: none;
+    margin: 1rem 0 1rem 0;
+    font-weight: bolder;
+}
+
+.button1 {
+    border-bottom: 2px solid black;
+    color: black;
+}
+
+.button2 {
+    border-bottom: 1px solid grey;
+    color: rgb(78, 78, 78);
+}
+
+.button1:hover, .button2:hover {
+    background-color: rgb(174, 212, 210);
+}
