@@ -18,7 +18,7 @@ app.post('/signup', async (req, res) => {
             var secret = authenticator.generateSecret();
             const db = mongo.client.db('zanonious');
             var collection = db.collection('usernames');
-            collection.insertOne({"username": req.body.username, "secret": secret});
+            collection.insertOne({"username": req.body.username, "secret": secret, "2fa": false});
             console.log("Inserted Successfully!;");
             res.cookie('username', req.body.username, {maxAge: 1800000, httpOnly: true});
             res.redirect('/2fa');
@@ -30,7 +30,6 @@ app.post('/signup', async (req, res) => {
 
 app.get('/username', async (req, res) => {
     if(req.cookies.username) {
-        console.log("Here");
         await mongo.client.connect();
         const db = mongo.client.db('zanonious');
         var collection = db.collection('usernames');
@@ -42,11 +41,39 @@ app.get('/username', async (req, res) => {
             "username": req.cookies.username,
             "secret": secret
         }]);
-        console.log("username sent");
     } else {
         res.json([{
             "username": null
         }]);
+    }
+});
+
+app.post('/enable', async (req, res) => {
+    if(req.cookies.username) {
+        await mongo.client.connect();
+        const db = mongo.client.db('zanonious');
+        var collection = db.collection('usernames');
+        var secret = null;
+        await collection.findOne({"username": req.cookies.username}).then(result => {
+            secret = result.secret;
+        });
+        try {
+            if(authenticator.check(req.body.twofa, secret)) {
+                await collection.updateOne({username: req.cookies.username},
+                    {
+                        $set: {
+                            "2fa": true
+                        }
+                    });
+                res.redirect('/dashboard');
+            } else {
+                res.redirect('/2fa?error=true');
+            }
+        } catch(e) {
+            res.redirect('/2fa?error=true');
+        }
+    }else {
+        res.redirect('/');
     }
 });
 
