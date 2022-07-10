@@ -10,6 +10,7 @@ function App() {
     <Routes>
       <Route exact path='/' element={<Starting />} />
       <Route path='/home' element={<Main />} />
+      <Route path='/2fa' element={<Main page="2fa"/>} />
     </Routes>
     </Router>
   );

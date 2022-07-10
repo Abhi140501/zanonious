@@ -44,7 +44,7 @@ function Signuppage() {
 
     return(
         <div className="signuppage">
-            <form>
+            <form action="/signup" method="POST">
                 <input type="text" name="username" placeholder="Username" className="username" id="username"></input>
                 <br></br>
                 <button onClick={copy} className="copy">Copy Username</button>

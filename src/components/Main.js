@@ -2,11 +2,11 @@ import React from "react";
 import Header from "./Header";
 import Login from "./Login";
 
-function Main() {
+function Main(props) {
     return(
         <div className="Main">
             <Header />
-            <Login />
+            {props.page ? <Login page="2fa" /> : <Login />}
         </div>
     );
 }

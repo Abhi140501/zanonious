@@ -2,8 +2,9 @@ import React from "react";
 import './css/Login.css';
 import Loginpage from "./subcomponents/Loginpage";
 import Signuppage from "./subcomponents/Signuppage";
+import Twofa from "./subcomponents/Twofa";
 
-function Login() {
+function Login(props) {
     const [LoginState, setLoginState] = React.useState(true);
 
     function changeDisplayLogin() {
@@ -24,11 +25,14 @@ function Login() {
 
     return(
         <div className="login">
+            {props.page ? 
+            <Twofa /> :
             <div className="row">
                 <button className="button1" id="login" onClick={changeDisplayLogin}>Login</button>
                 <button className="button2" id="signup" onClick={changeDisplaySignup}>SignUp</button>
                 { LoginState ?  <Loginpage /> : <Signuppage />}
             </div>
+            }
         </div>
     );
 }
