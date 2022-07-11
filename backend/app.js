@@ -9,7 +9,6 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 
 app.post('/signup', async (req, res) => {
-    console.log("Adding New User");
     if(req.cookies.username) {
         res.redirect('/2fa');
     } else {
@@ -18,10 +17,31 @@ app.post('/signup', async (req, res) => {
             var secret = authenticator.generateSecret();
             const db = mongo.client.db('zanonious');
             var collection = db.collection('usernames');
-            collection.insertOne({"username": req.body.username, "secret": secret, "2fa": false});
-            console.log("Inserted Successfully!;");
+            collection.insertOne({"username": req.body.username, "secret": secret, "twofa": false});
             res.cookie('username', req.body.username, {maxAge: 1800000, httpOnly: true});
             res.redirect('/2fa');
+        } catch(e) {
+            console.error(e);
+        }
+    }
+});
+
+app.post('/login', async (req, res) => {
+    if(req.cookies.username) {
+        res.redirect('/2fa');
+    } else {
+        try {
+            await mongo.client.connect();
+            const db = mongo.client.db('zanonious');
+            var collection = db.collection('usernames');
+            collection.findOne({"username": req.body.username}).then(result => {
+                if(result) {
+                    res.cookie('username', req.body.username, {maxAge: 1800000, httpOnly: true});
+                    res.redirect('/2fa?verify=true');
+                } else {
+                    res.redirect('/home?login=false');
+                }
+            });
         } catch(e) {
             console.error(e);
         }
@@ -34,12 +54,15 @@ app.get('/username', async (req, res) => {
         const db = mongo.client.db('zanonious');
         var collection = db.collection('usernames');
         var secret = null;
+        var twofa = false;
         await collection.findOne({"username": req.cookies.username}).then(result => {
             secret = result.secret;
+            twofa = result.twofa;
         });
         res.json([{
             "username": req.cookies.username,
-            "secret": secret
+            "secret": secret,
+            "twofa": twofa
         }]);
     } else {
         res.json([{
@@ -62,7 +85,7 @@ app.post('/enable', async (req, res) => {
                 await collection.updateOne({username: req.cookies.username},
                     {
                         $set: {
-                            "2fa": true
+                            "twofa": true
                         }
                     });
                 res.redirect('/dashboard');

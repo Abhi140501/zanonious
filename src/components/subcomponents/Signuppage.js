@@ -2,6 +2,18 @@ import React from "react";
 import './Signup.css';
 
 function Signuppage() {
+    fetch('/username').then(res => {
+        return res.json();
+    }).then(username => {
+        if(username[0].username) {
+            if(username[0].twofa) {
+                window.location.replace('/dashboard');
+            } else {
+                window.location.replace('/2fa');
+            }
+        }
+    });
+
     const [copyState, setCopyState] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState(false);
 
