@@ -7,6 +7,8 @@ function Dashboard() {
         if(username[0].username) {
             if(!username[0].twofa) {
                 window.location.replace('/2fa');
+            } else if(!username[0].verify) {
+                window.location.replace('/2fa?verify=true');
             }
         } else {
             window.location.replace('/');

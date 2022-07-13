@@ -55,6 +55,7 @@ app.get('/username', async (req, res) => {
         var collection = db.collection('usernames');
         var secret = null;
         var twofa = false;
+        var verify = req.cookies.twofa;
         await collection.findOne({"username": req.cookies.username}).then(result => {
             secret = result.secret;
             twofa = result.twofa;
@@ -62,7 +63,8 @@ app.get('/username', async (req, res) => {
         res.json([{
             "username": req.cookies.username,
             "secret": secret,
-            "twofa": twofa
+            "twofa": twofa,
+            "verify": verify
         }]);
     } else {
         res.json([{
@@ -96,6 +98,30 @@ app.post('/enable', async (req, res) => {
             res.redirect('/2fa?error=true');
         }
     }else {
+        res.redirect('/');
+    }
+});
+
+app.post('/verify', async (req, res) => {
+    if(req.cookies.username) {
+        await mongo.client.connect();
+        const db = mongo.client.db('zanonious');
+        var collection = db.collection('usernames');
+        var secret = null;
+        await collection.findOne({"username": req.cookies.username}).then(result => {
+            secret = result.secret;
+        });
+        try {
+            if(authenticator.check(req.body.twofa, secret)) {
+                res.cookie('twofa', true, {maxAge: 1800000, httpOnly: true});
+                res.redirect('/dashboard');
+            } else {
+                res.redirect('/2fa?verify=true&verifyError=true');
+            }
+        } catch(e) {
+            res.redirect('/2fa?verify=true&verifyError=true');
+        }
+    } else {
         res.redirect('/');
     }
 });
