@@ -3,10 +3,36 @@ const app = express();
 const mongo = require('./connectmongo');
 const cookieParser = require('cookie-parser');
 const {authenticator} = require('otplib');
+const sessions = require('express-session');
+const multer = require('multer');
+const { exec } = require('child_process');
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, "uploads/" + req.cookies.username);
+    },
+    filename: async function(req, file, cb) {
+        var filename = file.fieldname + "-" + Date.now();
+        cb(null, filename);
+        await mongo.client.connect();
+        var collection = db.collection('files');
+        collection.insertOne({"username": req.cookies.username, "file": filename});
+    }
+});
+
+var upload = multer({
+    storage: storage
+}).single("file");
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(sessions({
+    secret: "thisisasecretkey12340987",
+    saveUninitialized: true,
+    cookie: {maxAge: 1800000},
+    resave: false
+}));
 
 app.post('/signup', async (req, res) => {
     if(req.cookies.username) {
@@ -18,6 +44,7 @@ app.post('/signup', async (req, res) => {
             const db = mongo.client.db('zanonious');
             var collection = db.collection('usernames');
             collection.insertOne({"username": req.body.username, "secret": secret, "twofa": false});
+            exec("mkdir uploads/" + req.body.username);
             res.cookie('username', req.body.username, {maxAge: 1800000, httpOnly: true});
             res.redirect('/2fa');
         } catch(e) {
@@ -73,6 +100,18 @@ app.get('/username', async (req, res) => {
     }
 });
 
+app.get('/password', async (req, res) => {
+    if(req.session.password) {
+        res.json([{
+            "password": req.session.password
+        }]);
+    } else {
+        res.json([{
+            "password": null
+        }]);
+    }
+});
+
 app.post('/enable', async (req, res) => {
     if(req.cookies.username) {
         await mongo.client.connect();
@@ -90,7 +129,7 @@ app.post('/enable', async (req, res) => {
                             "twofa": true
                         }
                     });
-                res.redirect('/dashboard');
+                res.redirect('/password');
             } else {
                 res.redirect('/2fa?error=true');
             }
@@ -114,7 +153,7 @@ app.post('/verify', async (req, res) => {
         try {
             if(authenticator.check(req.body.twofa, secret)) {
                 res.cookie('twofa', true, {maxAge: 1800000, httpOnly: true});
-                res.redirect('/dashboard');
+                res.redirect('/password');
             } else {
                 res.redirect('/2fa?verify=true&verifyError=true');
             }
@@ -124,6 +163,22 @@ app.post('/verify', async (req, res) => {
     } else {
         res.redirect('/');
     }
+});
+
+app.post('/setPassword', (req, res) => {
+    req.session.password = req.body.password;
+    res.redirect('/dashboard');
+});
+
+app.post('/upload', (req, res) => {
+    upload(req, res, function(err) {
+        if(err) {
+            console.error(err);
+        } else {
+            console.log("Success");
+            res.redirect('/dashboard');
+        }
+    });
 });
 
 const PORT = process.env.PORT || 8080;

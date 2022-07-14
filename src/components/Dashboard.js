@@ -15,9 +15,29 @@ function Dashboard() {
         }
     });
 
+    fetch('/password').then(res => {
+        return res.json();
+    }).then(password => {
+        if(!password[0].password) {
+            window.location.replace('/password');
+        }
+    });
+
+    function uploadFile(e) {
+        e.preventDefault();
+        document.getElementById('upload').click();
+    }
+
+    function submitForm() {
+        document.getElementById('form').submit();
+    }
+
     return(
         <div className="Dashboard">
-            Dashboard
+            <form id="form" action="/upload" method="POST" encType="multipart/form-data">
+                <input type='file' hidden id="upload" onChange={submitForm} name="file"></input>
+                <button onClick={uploadFile}>Upload File</button>
+            </form>
         </div>
     );
 }
