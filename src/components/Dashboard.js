@@ -10,7 +10,7 @@ function Dashboard() {
                 window.location.replace('/2fa');
             } else if(!username[0].verify) {
                 window.location.replace('/2fa?verify=true');
-            } else if(username[0].verify != username[0].username) {
+            } else if(username[0].verify !== username[0].username) {
                 window.location.replace('/2fa?verify=true');
             }
         } else {
