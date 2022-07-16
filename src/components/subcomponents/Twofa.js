@@ -12,7 +12,6 @@ function Twofa() {
     fetch('/username').then(res => {
         return res.json();
     }).then(username => {
-        console.log(username);
         if(username[0].username) {
             if(username[0].twofa && !verify) {
                 window.location.replace('/dashboard');

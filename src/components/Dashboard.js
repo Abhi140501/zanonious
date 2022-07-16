@@ -1,4 +1,5 @@
 import React from "react";
+import Files from "./subcomponents/Files";
 
 function Dashboard() {
     fetch('/username').then(res => {
@@ -8,6 +9,8 @@ function Dashboard() {
             if(!username[0].twofa) {
                 window.location.replace('/2fa');
             } else if(!username[0].verify) {
+                window.location.replace('/2fa?verify=true');
+            } else if(username[0].verify != username[0].username) {
                 window.location.replace('/2fa?verify=true');
             }
         } else {
@@ -37,6 +40,10 @@ function Dashboard() {
             <form id="form" action="/upload" method="POST" encType="multipart/form-data">
                 <input type='file' hidden id="upload" onChange={submitForm} name="file"></input>
                 <button onClick={uploadFile}>Upload File</button>
+            </form>
+            <Files />
+            <form action="/logout" method="POST">
+                <button type="submit">Encrypt and Logout</button>
             </form>
         </div>
     );

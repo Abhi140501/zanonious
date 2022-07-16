@@ -1,9 +1,10 @@
 import React from "react";
 import './css/Password.css';
-import encryptionPassword from '../App';
+import { useSearchParams } from "react-router-dom";
 
 function Password() {
-    const [login, setLogin] = React.useState(false);
+    var [searchParams] = useSearchParams();
+    var login = searchParams.get("error");
 
     return(
         <div className="password">
@@ -11,7 +12,7 @@ function Password() {
                 <form action="/setPassword" method="POST">
                     <input type="password" name="password" className="password-field" id="password" placeholder="Enter Encryption Password"></input>
                     <br></br>
-                    {login ? <p className="error">Error Setting Password!<br></br>Please Check Your Password!</p> : null}
+                    {login ? <p className="error">Error Decrypting Data!<br></br>Please Check Your Password!</p> : null}
                     <button type="submit">Set Encryption Password</button>
                 </form>
             </div>
