@@ -1,5 +1,8 @@
 import React from "react";
 import Files from "./subcomponents/Files";
+import './css/Dashboard.css';
+import logo from './img/er.png';
+import hamburger from './img/burger.png';
 
 function Dashboard() {
     fetch('/username').then(res => {
@@ -35,16 +38,64 @@ function Dashboard() {
         document.getElementById('form').submit();
     }
 
+    function changeIcon() {
+        if(document.getElementById("iconSidebar").style.display == "none") {
+            document.getElementById("sidebar").style.display = "none";
+            document.getElementById("iconSidebar").style.display = "block";
+            document.getElementById("rightofbar").style.width = "94%";
+        } else {
+            document.getElementById("sidebar").style.display = "block";
+            document.getElementById("iconSidebar").style.display = "none";
+            document.getElementById("rightofbar").style.width = "79%";
+        }
+    }
+
     return(
         <div className="Dashboard">
-            <form id="form" action="/upload" method="POST" encType="multipart/form-data">
-                <input type='file' hidden id="upload" onChange={submitForm} name="file"></input>
-                <button onClick={uploadFile}>Upload File</button>
-            </form>
-            <Files />
-            <form action="/logout" method="POST">
-                <button type="submit">Encrypt and Logout</button>
-            </form>
+            <div className="titlebar">
+                <img src={hamburger} alt="hamburger menu" className="hamburger" onClick={changeIcon}></img>
+                <img src={logo} alt="zanonious logo" className="logo"></img>
+                <form action="/logout" method="POST" className="logout">
+                    <button type="submit" className="logoutButton">Encrypt and Logout</button>
+                </form>
+            </div>
+            <div className="content">
+                <div className="sidebar" id="sidebar">
+                    <ul>
+                        <li>Uploaded</li>
+                        <li>Shared</li>
+                        <li>Received</li>
+                    </ul>
+                </div>
+                <div className="iconSidebar" id="iconSidebar">
+                    <ul>
+                        <li>U</li>
+                        <li>S</li>
+                        <li>R</li>
+                    </ul>
+                </div>
+                <div className="rightofbar" id="rightofbar">
+                    <div className="actions">
+                        <ul className="horizontal">
+                            <li>
+                                <form id="form" action="/upload" method="POST" encType="multipart/form-data">
+                                    <input type='file' hidden id="upload" onChange={submitForm} name="file"></input>
+                                    <button onClick={uploadFile}>Upload File</button>
+                                </form>
+                            </li>
+                            <li>
+                                <button className="share">Share</button>
+                            </li>
+                            <li>
+                                <button className="delete">Delete</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="contentDisplay">
+                        <Files />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

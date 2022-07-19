@@ -14,23 +14,16 @@ function Files() {
     return (
         <div className="files">
             <table>
-                <thead>
-                    <tr>
-                        <td>Filename</td>
-                        <td>Actions</td>
-                    </tr>
-                </thead>
                 <tbody>
                     {filesList ? 
                             filesList.files.map(file => 
                                     <tr key={file._id}>
                                         <td>{file.origin}</td> 
-                                        <td></td>
                                     </tr>
                                 )
                     :
                         <tr>
-                            <td colSpan={2}>No Files are Uploaded!</td>
+                            <td>No Files are Uploaded!</td>
                         </tr>
                     }
                 </tbody>

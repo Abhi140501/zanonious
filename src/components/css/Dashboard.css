@@ -1,0 +1,85 @@
+.titlebar {
+    width: 100%;
+    background: linear-gradient(to right, #616161 0%, #9BC5C3 100%);
+}
+
+.logo {
+    width: 5%;
+    float: left;
+    padding-left: 1%;
+
+}
+
+.logout {
+    float: right;
+}
+
+.content {
+    clear: both;
+}
+
+.titlebar:before,
+.titlebar:after {
+    content: " ";
+    display: table;
+}
+
+.titlebar:after {
+    clear: both;
+}
+
+.titlebar {
+    *zoom: 1;
+}
+
+.logoutButton {
+    padding: 19%;
+    background-color: #9BC5C3;
+    border: none;
+}
+
+.logoutButton:hover {
+    background-color: #84a6a3;
+}
+
+.sidebar {
+    width: 20%;
+    float: left;
+    border: 1px solid black;
+}
+
+.rightofbar {
+    width: 79%;
+    float: right;
+    border: 1px solid black;
+}
+
+li {
+    list-style: none;
+}
+
+.horizontal {
+    display: flex;
+    border: 1px solid black;
+}
+
+.actions {
+    width: 100%;
+}
+
+.hamburger {
+    width: 2%;
+    float: left;
+    padding-top: 1.5%;
+    padding-left: 0.8%;
+}
+
+.hamburger:hover {
+    cursor: pointer;
+}
+
+.iconSidebar {
+    display: none;
+    width: 5%;
+    float: left;
+}
