@@ -15,6 +15,7 @@ module.exports = function(app) {
                 collection.insertOne({"username": req.body.username, "secret": secret, "twofa": false});
                 exec("mkdir uploads/" + req.body.username);
                 exec("mkdir shared/" + req.body.username);
+                exec("mkdir shared/" + req.body.username + '/downloading');
                 res.cookie('username', req.body.username, {httpOnly: true});
                 res.redirect('/2fa');
             } catch(e) {

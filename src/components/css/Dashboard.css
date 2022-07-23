@@ -105,3 +105,7 @@ td {
 .switchTab:hover {
     background-color: gray;
 }
+
+.downloadPass {
+    display: none;
+}

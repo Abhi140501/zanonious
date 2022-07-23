@@ -52,6 +52,8 @@ function Files() {
             if(retreived[0].shared) {
                 alert("Shared the File with User");
                 document.getElementById('sharing').style.display = "none";
+            } else {
+                alert("Error! Username of The Other User Not Found!");
             }
         });
     }

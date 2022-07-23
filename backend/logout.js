@@ -11,6 +11,7 @@ module.exports = function(app) {
                     output: 'uploads/' + req.cookies.username + '.encr'
                 }).then(() => {
                     exec('shred -u uploads/' + req.cookies.username + '/*');
+                    exec('shred -u shared/' + req.cookies.username + '/downloading/*');
                     res.clearCookie("username");
                     res.clearCookie("twofa");
                     res.redirect('/');

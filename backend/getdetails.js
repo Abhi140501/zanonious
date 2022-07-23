@@ -78,5 +78,26 @@ module.exports = function(app) {
                 "files": null
             }]);
         }
-    })
+    });
+
+    app.get('/receivedfiles', async (req, res) => {
+        if(req.cookies.username) {
+            await mongo.client.connect();
+            const db = mongo.client.db('zanonious');
+            var collection = db.collection('shared');
+            var files = null;
+            var array = [];
+            await collection.find({"username": req.cookies.username}).toArray().then(result => {
+                files = result;
+                files.forEach(file => {
+                    array.push(file);
+                })
+            });
+            res.json(array);
+        } else { 
+            res.json([{
+                "files": null
+            }]);
+        }
+    });
 }

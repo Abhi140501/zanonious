@@ -5,11 +5,14 @@ import logo from './img/er.png';
 import hamburger from './img/burger.png';
 import Shared from "./subcomponents/Shared";
 import Received from "./subcomponents/Received";
+import { useSearchParams } from "react-router-dom";
 
 function Dashboard() {
     const [filesView, setFilesView] = React.useState(true);
     const [sharedView, setSharedView] = React.useState(false);
     const [receivedView, setReceivedView] = React.useState(false);
+    var [searchParams] = useSearchParams();
+    var error = searchParams.get("error");
 
     fetch('/username').then(res => {
         return res.json();
@@ -91,6 +94,7 @@ function Dashboard() {
                 </div>
                 <div className="rightofbar" id="rightofbar">
                     <div className="contentDisplay">
+                    {error ? <p>Some Error Occured! Please Check Details Entered!</p> : null}
                         {filesView && <Files />}
                         {sharedView && <Shared />}
                         {receivedView && <Received />}

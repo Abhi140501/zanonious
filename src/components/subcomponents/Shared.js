@@ -12,7 +12,29 @@ function Shared() {
     });
 
     function stopShare() {
-
+        var radios = document.getElementsByName('chosenFile');
+        var selected = Array.from(radios).find(radio => radio.checked);
+        var data = {
+            filename: selected.value
+        }
+        if(selected) {
+            fetch('/stopshare', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }).then(res => {
+                return res.json();
+            }).then(result => {
+                if(result[0].deleted) {
+                    alert("Stopped Sharing the File");
+                    window.location.replace('/dashboard');
+                }
+            });
+        } else {    
+            alert("Please Select a File!");
+        }
     }
 
     return(
