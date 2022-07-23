@@ -10,6 +10,8 @@ module.exports = function(app) {
         await collection.deleteOne({"file": req.body.filename});
         collection = db.collection('shared');
         await collection.deleteOne({"file": req.body.filename});
+        collection = db.collection('linked');
+        await collection.deleteOne({"file": req.body.filename});
         exec("shred -u uploads/" + req.cookies.username + '/' + req.body.filename);
         res.json([{
             "deleted": true
