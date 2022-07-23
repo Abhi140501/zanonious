@@ -30,4 +30,14 @@ module.exports = function(app) {
             "deleted": true
         }]);
     });
+
+    app.post('/deletelink', async (req, res) => {
+        await mongo.client.connect();
+        const db = mongo.client.db('zanonious');
+        var collection = db.collection('linked');
+        collection.deleteOne({"link": req.body.link});
+        res.json([{
+            "deleted": true
+        }]);
+    });
 }

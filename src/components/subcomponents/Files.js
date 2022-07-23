@@ -40,22 +40,26 @@ function Files() {
             username: username.value,
             password: password.value
         }
-        fetch('/share', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        }).then(res => {
-            return res.json();
-        }).then(retreived => {
-            if(retreived[0].shared) {
-                alert("Shared the File with User");
-                document.getElementById('sharing').style.display = "none";
-            } else {
-                alert("Error! Username of The Other User Not Found!");
-            }
-        });
+        if(username.value.length != 0) {
+            fetch('/share', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }).then(res => {
+                return res.json();
+            }).then(retreived => {
+                if(retreived[0].shared) {
+                    alert("Shared the File with User");
+                    document.getElementById('sharing').style.display = "none";
+                } else {
+                    alert("Error! Username of The Other User Not Found!");
+                }
+            });
+        }else {
+            alert("Please enter a Username!");
+        }
     }
 
     function downloadFile() {
@@ -97,6 +101,35 @@ function Files() {
             alert("Please Select a File!");
         }
     }
+
+    function genLink() {
+        var radios = document.getElementsByName('chosenFile');
+        var selected = Array.from(radios).find(radio => radio.checked);
+        var password = document.getElementById('password').value;
+        var data = {
+            filename: selected.value,
+            password: password
+        }
+        if(selected) {
+            if(password.length !== 0) {
+                fetch('/genLink', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                }).then(res => {
+                    return res.json();
+                }).then(result => {
+                    alert("Link Generated!");
+                });
+            } else {
+                alert("Please Enter The Password to Generate Link!");
+            }
+        } else {
+            alert("Please Select a File!");
+        }
+    }
  
     return (
         <div className="files">
@@ -125,7 +158,7 @@ function Files() {
                 <label htmlFor="password">Enter Sharing Password:</label><br></br>
                 <input type="password" name="password" id="password"></input><br></br>
                 <button onClick={shareToUser}>Share to User</button><br></br>
-                <button>Generate Link</button>
+                <button onClick={genLink}>Generate Link</button>
             </div>
             <table>
                 <tbody>

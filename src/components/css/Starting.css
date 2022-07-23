@@ -16,12 +16,12 @@
     clear: both;
     text-align: center;
     font-size: 4rem;
-    color: white;
+    color: black;
 }
 
 .loading {
     text-align: center;
-    color: white;
+    color: black;
 }
 
 .spinner {
@@ -32,5 +32,5 @@
 .group {
     width: 90%;
     text-align: right;
-    color: white;
+    color: black;
 }

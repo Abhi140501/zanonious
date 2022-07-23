@@ -30,4 +30,30 @@ module.exports = function(app) {
             }
         });
     });
+
+    app.post('/genLink', async (req, res) => {
+        await mongo.client.connect();
+        const db = mongo.client.db('zanonious');
+        var collection = db.collection('files');
+        const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let link = '';
+        const charactersLength = characters.length;
+        for ( let i = 0; i < 1000; i++ ) {
+            link += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        folderEncrypt.encrypt({
+            password: req.body.password,
+            input: 'uploads/' + req.cookies.username + '/' + req.body.filename,
+            output: 'linked/' + req.body.filename + '.encr' 
+        }).catch((err) => {
+            console.error(err);
+        });
+        await collection.findOne({"file": req.body.filename}).then(result => {
+            collection = db.collection('linked');
+            collection.insertOne({"username": req.cookies.username, "file": req.body.filename, "origin": result.origin, "link": link});
+        });
+        res.json([{
+            "shared": true
+        }]);
+    });
 }

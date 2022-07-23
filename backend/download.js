@@ -27,4 +27,27 @@ module.exports = function(app) {
             });
         });
     });
+
+    app.post('/downloadlink', async (req, res) => {
+        await mongo.client.connect();
+        const db = mongo.client.db('zanonious');
+        var collection = db.collection('linked');
+        await collection.findOne({"link": req.body.link}).then(result => {
+            if(result) {
+                var now = Date.now();
+                folderEncrypt.decrypt({
+                    password: req.body.password,
+                    input: 'linked/' + result.file + '.encr',
+                    output: 'down/' + now
+                }).then(() => {
+                    res.download('down/'+now, result.origin);
+                }).catch((err) => {
+                    console.log(err);
+                    res.redirect('/');
+                });
+            } else {
+                res.redirect('/');
+            }
+        });
+    });
 }

@@ -6,11 +6,13 @@ import hamburger from './img/burger.png';
 import Shared from "./subcomponents/Shared";
 import Received from "./subcomponents/Received";
 import { useSearchParams } from "react-router-dom";
+import Links from "./subcomponents/Links";
 
 function Dashboard() {
     const [filesView, setFilesView] = React.useState(true);
     const [sharedView, setSharedView] = React.useState(false);
     const [receivedView, setReceivedView] = React.useState(false);
+    const [linksView, setLinksView] = React.useState(false);
     var [searchParams] = useSearchParams();
     var error = searchParams.get("error");
 
@@ -54,18 +56,28 @@ function Dashboard() {
         setFilesView(true);
         setSharedView(false);
         setReceivedView(false);
+        setLinksView(false);
     }
     
     function setShare() {
         setFilesView(false);
         setSharedView(true);
         setReceivedView(false);
+        setLinksView(false);
     }
 
     function setReceived() {
         setFilesView(false);
         setSharedView(false);
         setReceivedView(true);
+        setLinksView(false);
+    }
+
+    function setLinks() {
+        setFilesView(false);
+        setSharedView(false);
+        setReceivedView(false);
+        setLinksView(true);
     }
 
     return(
@@ -83,6 +95,7 @@ function Dashboard() {
                         <li className="switchTab" onClick={setFiles}>Uploaded</li>
                         <li className="switchTab" onClick={setShare}>Shared</li>
                         <li className="switchTab" onClick={setReceived}>Received</li>
+                        <li className="switchTab" onClick={setLinks}>Links</li>
                     </ul>
                 </div>
                 <div className="iconSidebar" id="iconSidebar">
@@ -98,6 +111,7 @@ function Dashboard() {
                         {filesView && <Files />}
                         {sharedView && <Shared />}
                         {receivedView && <Received />}
+                        {linksView && <Links />}
                     </div>
                 </div>
             </div>
