@@ -40,7 +40,7 @@ function Files() {
             username: username.value,
             password: password.value
         }
-        if(username.value.length != 0) {
+        if(username.value.length !== 0) {
             fetch('/share', {
                 method: "POST",
                 headers: {

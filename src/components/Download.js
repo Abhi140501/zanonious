@@ -5,10 +5,6 @@ function Download() {
     var [searchParams] = useSearchParams();
     var link = searchParams.get("l");
 
-    function downloadNow() {
-
-    }
-
     return(
         <div className="download">
             <form action="/downloadlink" method="POST">
