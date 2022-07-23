@@ -34,9 +34,11 @@ function Files() {
         var radios = document.getElementsByName('chosenFile');
         var selected = Array.from(radios).find(radio => radio.checked);
         var username = document.getElementById('username');
+        var password = document.getElementById('password');
         var data = {
             filename: selected.value,
-            username: username.value
+            username: username.value,
+            password: password.value
         }
         fetch('/share', {
             method: "POST",
@@ -57,16 +59,41 @@ function Files() {
     function downloadFile() {
         var radios = document.getElementsByName('chosenFile');
         var selected = Array.from(radios).find(radio => radio.checked);
-        var form = document.createElement('form');
-        document.body.appendChild(form);
-        form.method="POST";
-        form.action="/download";
-        var element = document.createElement('INPUT');
-        element.name = "filename";
-        element.value = selected.value;
-        element.type = "hidden";
-        form.appendChild(element);
-        form.submit();
+        if(selected) {
+            var form = document.createElement('form');
+            document.body.appendChild(form);
+            form.method="POST";
+            form.action="/download";
+            var element = document.createElement('INPUT');
+            element.name = "filename";
+            element.value = selected.value;
+            element.type = "hidden";
+            form.appendChild(element);
+            form.submit();
+        } else {
+            alert("Please Select a File!");
+        }
+    }
+
+    function deleteFile() {
+        var radios = document.getElementsByName('chosenFile');
+        var selected = Array.from(radios).find(radio => radio.checked);
+        var data = {
+            filename: selected.value
+        }
+        if(selected) {
+            fetch('/delete', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }).then(res => {
+                return res.json();
+            });
+        } else {
+            alert("Please Select a File!");
+        }
     }
  
     return (
@@ -83,7 +110,7 @@ function Files() {
                         <button className="share" onClick={shareFile}>Share</button>
                     </li>
                     <li>
-                        <button className="delete">Delete</button>
+                        <button className="delete" onClick={deleteFile}>Delete</button>
                     </li>
                     <li>
                         <button className="download" onClick={downloadFile}>Download</button>
@@ -93,6 +120,8 @@ function Files() {
             <div className="sharing" id="sharing">
                 <label htmlFor="username">Enter Username to share:</label><br></br>
                 <input type="text" name="username" id="username"></input><br></br>
+                <label htmlFor="password">Enter Sharing Password:</label><br></br>
+                <input type="password" name="password" id="password"></input><br></br>
                 <button onClick={shareToUser}>Share to User</button><br></br>
                 <button>Generate Link</button>
             </div>

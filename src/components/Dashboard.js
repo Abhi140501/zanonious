@@ -3,8 +3,14 @@ import Files from "./subcomponents/Files";
 import './css/Dashboard.css';
 import logo from './img/er.png';
 import hamburger from './img/burger.png';
+import Shared from "./subcomponents/Shared";
+import Received from "./subcomponents/Received";
 
 function Dashboard() {
+    const [filesView, setFilesView] = React.useState(true);
+    const [sharedView, setSharedView] = React.useState(false);
+    const [receivedView, setReceivedView] = React.useState(false);
+
     fetch('/username').then(res => {
         return res.json();
     }).then(username => {
@@ -41,6 +47,24 @@ function Dashboard() {
         }
     }
 
+    function setFiles() {
+        setFilesView(true);
+        setSharedView(false);
+        setReceivedView(false);
+    }
+    
+    function setShare() {
+        setFilesView(false);
+        setSharedView(true);
+        setReceivedView(false);
+    }
+
+    function setReceived() {
+        setFilesView(false);
+        setSharedView(false);
+        setReceivedView(true);
+    }
+
     return(
         <div className="Dashboard">
             <div className="titlebar">
@@ -53,9 +77,9 @@ function Dashboard() {
             <div className="content">
                 <div className="sidebar" id="sidebar">
                     <ul>
-                        <li>Uploaded</li>
-                        <li>Shared</li>
-                        <li>Received</li>
+                        <li className="switchTab" onClick={setFiles}>Uploaded</li>
+                        <li className="switchTab" onClick={setShare}>Shared</li>
+                        <li className="switchTab" onClick={setReceived}>Received</li>
                     </ul>
                 </div>
                 <div className="iconSidebar" id="iconSidebar">
@@ -67,7 +91,9 @@ function Dashboard() {
                 </div>
                 <div className="rightofbar" id="rightofbar">
                     <div className="contentDisplay">
-                        <Files />
+                        {filesView && <Files />}
+                        {sharedView && <Shared />}
+                        {receivedView && <Received />}
                     </div>
                 </div>
             </div>

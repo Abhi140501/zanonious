@@ -25,3 +25,4 @@ require('./logout.js')(app);
 require('./getdetails.js')(app);
 require('./share.js')(app);
 require('./download.js')(app);
+require('./delete.js')(app);

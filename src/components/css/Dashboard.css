@@ -92,3 +92,16 @@ td {
 .sharing {
     display: none;
 }
+
+.switchTab {
+    padding: 5%;
+    background-color: lightgray;
+    border: 1px solid black;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 5%;
+}
+
+.switchTab:hover {
+    background-color: gray;
+}
