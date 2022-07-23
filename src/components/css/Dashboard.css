@@ -45,13 +45,11 @@
 .sidebar {
     width: 20%;
     float: left;
-    border: 1px solid black;
 }
 
 .rightofbar {
     width: 79%;
     float: right;
-    border: 1px solid black;
 }
 
 li {
@@ -60,7 +58,6 @@ li {
 
 .horizontal {
     display: flex;
-    border: 1px solid black;
 }
 
 .actions {
@@ -82,4 +79,16 @@ li {
     display: none;
     width: 5%;
     float: left;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    border: 1px solid black;
+}
+
+.sharing {
+    display: none;
 }

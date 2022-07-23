@@ -23,3 +23,5 @@ require('./setpassword.js')(app);
 require('./upload.js')(app);
 require('./logout.js')(app);
 require('./getdetails.js')(app);
+require('./share.js')(app);
+require('./download.js')(app);

@@ -29,17 +29,8 @@ function Dashboard() {
         }
     });
 
-    function uploadFile(e) {
-        e.preventDefault();
-        document.getElementById('upload').click();
-    }
-
-    function submitForm() {
-        document.getElementById('form').submit();
-    }
-
     function changeIcon() {
-        if(document.getElementById("iconSidebar").style.display == "none") {
+        if(document.getElementById("iconSidebar").style.display === "none") {
             document.getElementById("sidebar").style.display = "none";
             document.getElementById("iconSidebar").style.display = "block";
             document.getElementById("rightofbar").style.width = "94%";
@@ -75,22 +66,6 @@ function Dashboard() {
                     </ul>
                 </div>
                 <div className="rightofbar" id="rightofbar">
-                    <div className="actions">
-                        <ul className="horizontal">
-                            <li>
-                                <form id="form" action="/upload" method="POST" encType="multipart/form-data">
-                                    <input type='file' hidden id="upload" onChange={submitForm} name="file"></input>
-                                    <button onClick={uploadFile}>Upload File</button>
-                                </form>
-                            </li>
-                            <li>
-                                <button className="share">Share</button>
-                            </li>
-                            <li>
-                                <button className="delete">Delete</button>
-                            </li>
-                        </ul>
-                    </div>
                     <div className="contentDisplay">
                         <Files />
                     </div>
