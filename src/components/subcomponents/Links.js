@@ -12,13 +12,29 @@ function Links() {
     });
 
     function copyLink() {
-        var link = 'localhost:3000/share?l=';
+        var link = window.location.href;
+        link = link.replace('/dashboard', '/share?l=');
         var radios = document.getElementsByName('chosenFile');
         var selected = Array.from(radios).find(radio => radio.checked);
         if(selected) {
-            console.log(selected.value);
             link += selected.value;
-            navigator.clipboard.writeText(link);
+            if(navigator.clipboard !== undefined) {
+                navigator.clipboard.writeText(link);
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = link;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                return new Promise((res, rej) => {
+                    document.execCommand('copy') ? res() : rej();
+                    textArea.remove();
+                    alert("Link Copied!");
+                });
+            }
             alert("Link Copied!");
         } else {
             alert("Please Select a File")

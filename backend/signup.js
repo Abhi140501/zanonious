@@ -5,7 +5,7 @@ const {authenticator} = require('otplib');
 module.exports = function(app) {
     app.post('/signup', async (req, res) => {
         if(req.cookies.username) {
-            res.redirect('/2fa');
+            res.redirect('/dashboard');
         } else {
             try {
                 await mongo.client.connect();

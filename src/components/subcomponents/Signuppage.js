@@ -46,8 +46,24 @@ function Signuppage() {
             copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
             /* Copy the text inside the text field */
-            navigator.clipboard.writeText(copyText.value);
-            setCopyState(true);
+            if(navigator.clipboard !== undefined) {
+                navigator.clipboard.writeText(copyText.value);
+                setCopyState(true);
+            }else {
+                let textArea = document.createElement("textarea");
+                textArea.value = copyText.value;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                return new Promise((res, rej) => {
+                    document.execCommand('copy') ? res() : rej();
+                    textArea.remove();
+                    setCopyState(true);
+                });
+            }
         } else {
             setErrorMessage(true);
             setCopyState(false);
